@@ -1,6 +1,6 @@
 jQuery(function($) {
-    var map,
-        mapOptions;
+    var map, mapOptions, userPosition, addPoint,
+        $body = $('body');
 
     function initialize(lat, lng) {
         mapOptions = {
@@ -18,9 +18,9 @@ jQuery(function($) {
             mapOptions);
 
         geolocate();
-
         pointViewer();
 
+        $body.addClass('page_init_yes');
     }
 
     function geolocate() {
@@ -40,7 +40,6 @@ jQuery(function($) {
             });
         }
     }
-
 
     function pointViewer() {
         var markers = [];
@@ -68,14 +67,53 @@ jQuery(function($) {
         }
     }
 
-
     var myEfficientFn = $.debounce(function() {
 
         map.getBounds();
 
     }, 500);
     setTimeout(myEfficientFn(), 1000);
+
     google.maps.event.addDomListener(window, 'load', initialize);
     //google.maps.event.addListener(map, 'bounds_changed', myEfficientFn);
 
-})
+    addPoint = {
+        active: false,
+        marker: null,
+
+        changeState: function() {
+            if (this.active) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        },
+
+        show: function() {
+            this.active = true;
+
+            this.marker = new google.maps.Marker({
+                map: map,
+                position: userPosition,
+                draggable: true
+            });
+        },
+
+        hide: function() {
+            this.active = false;
+            this.marker.setMap(null);
+        }
+    };
+
+    $('.add-button').click(function() {
+        var $this = $(this);
+
+        if ($this.hasClass('button_active_yes')) {
+            $this.removeClass('button_active_yes');
+        } else {
+            $this.addClass('button_active_yes');
+        }
+
+        addPoint.changeState();
+    });
+});
