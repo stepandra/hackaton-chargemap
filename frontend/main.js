@@ -22,6 +22,7 @@ jQuery(function($) {
                 ne = map.getBounds().getNorthEast(),
                 center = map.getCenter();
 
+            // Получаем данные с нашего сервера
             $.ajax({
                 type: "GET",
                 url: 'points/list',
@@ -33,11 +34,13 @@ jQuery(function($) {
                 },
                 dataType: "json",
                 success: function(response) {
+                    var item;
+
                     for (i = 0; i < response.length; i++) {
-                        new google.maps.Marker({
-                            position: new google.maps.LatLng(response[i].lat, response[i].lng),
-                            map: map
-                        });
+                        item = response[i];
+                        item.src = "db";
+
+                        Markers.add(item);
                     }
                 }
             });
