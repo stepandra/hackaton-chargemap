@@ -2,11 +2,9 @@ package ua.charger.map.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ua.charger.map.domain.ChargerPoint;
 import ua.charger.map.dto.ChargerPointDTO;
 import ua.charger.map.service.PointService;
@@ -20,6 +18,8 @@ public class PointControllerImpl implements PointController {
     private PointService pointService;
 
     @Override
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public void add(@RequestParam("lat") float lat,
                     @RequestParam("lng") float lng,
@@ -35,18 +35,18 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/found", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/found", method = RequestMethod.POST)
     public
     @ResponseBody
-    int found(@RequestParam("chargerPointId") int id) {
+    int found(@PathVariable("id") int id) {
         return pointService.found(id);
     }
 
     @Override
-    @RequestMapping(value = "/notFound", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/notFound", method = RequestMethod.POST)
     public
     @ResponseBody
-    int notFound(@RequestParam("chargerPointId") int id) {
+    int notFound(@PathVariable("id") int id) {
         return pointService.notFound(id);
     }
 
