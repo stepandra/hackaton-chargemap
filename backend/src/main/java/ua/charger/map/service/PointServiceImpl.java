@@ -21,7 +21,7 @@ public class PointServiceImpl implements PointService {
     public void save(ChargerPoint chargerPoint) {
         chargerPoints.add(chargerPoint);
         count.incrementAndGet();
-        LOGGER.trace("Saved: {" + chargerPoint + "}");
+        LOGGER.info("Saved: {" + chargerPoint + "}");
     }
 
     @Override
@@ -35,6 +35,7 @@ public class PointServiceImpl implements PointService {
                 continue;
             chargerPoints.add(new ChargerPointDTO(chargerPoint));
         }
+        LOGGER.info("Returned list {" + chargerPoints + '}');
         return chargerPoints;
     }
 

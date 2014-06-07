@@ -47,4 +47,17 @@ public class ChargerPointDTO {
     public int getNotFounds() {
         return notFounds;
     }
+
+    @Override
+    public String toString() {
+        return "ChargerPointDTO{" +
+                "id=" + id +
+                ", foursquareId=" + foursquareId +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", description='" + description + '\'' +
+                ", founds=" + founds +
+                ", notFounds=" + notFounds +
+                '}';
+    }
 }
