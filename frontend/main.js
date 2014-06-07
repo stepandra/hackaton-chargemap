@@ -1,54 +1,48 @@
 jQuery(function($) {
-    var map, mapOptions, userPosition, addPoint,
+    var map, userPosition, addPoint,
         $body = $('body');
 
-    function initialize(lat, lng) {
-        mapOptions = {
-            zoom: 17,
-            center: new google.maps.LatLng(50.45015, 30.52651),
-            zoomControl: true,
-            disableDefaultUI: true,
-            zoomControlOptions: {
-                style: google.maps.ZoomControlStyle.SMALL,
-                position: google.maps.ControlPosition.RIGHT_TOP
-            }
-        };
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
+    function initialize() {
+        var i,
+            mapOptions = {
+                zoom: 11,
+                center: new google.maps.LatLng(50.45015, 30.52651),
+                zoomControl: true,
+                disableDefaultUI: true,
+                zoomControlOptions: {
+                    style: google.maps.ZoomControlStyle.SMALL,
+                    position: google.maps.ControlPosition.RIGHT_TOP
+                }
+            };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         
         google.maps.event.addListener(map, 'bounds_changed', $.debounce(function() {
+            var sw = map.getBounds().getSouthWest(),
+                ne = map.getBounds().getNorthEast();
+
             $.ajax({
                 type: "GET",
                 url: 'http://rozetka.veikus.com:8080/points/list',
                 data: {
-                    latEnd: map.getBounds().getSouthWest().k,
-                    lngEnd: map.getBounds().getNorthEast().A,
-                    latStart: map.getBounds().getNorthEast().k,
-                    lngStart: map.getBounds().getSouthWest().A
+                    latEnd: sw.lat(),
+                    lngEnd: ne.lng(),
+                    latStart: ne.lat(),
+                    lngStart: sw.lng()
                 },
                 dataType: "json",
                 success: function(response) {
-                    for (var i = 0; i < response.length; i++) {
-                        marker = new google.maps.Marker({
+                    for (i = 0; i < response.length; i++) {
+                        new google.maps.Marker({
                             position: new google.maps.LatLng(response[i].lat, response[i].lng),
                             map: map
-                        });
-                        markers.push(marker);
-                    };
-                    for (var i = 0; i < markers.length; i++) {
-                        markers[i].setMap(map);
+                        }).setMap(map);
                     }
                 }
-
-
-
-
             });
-            console.log(map.getBounds().getNorthEast().A, map.getBounds().getSouthWest().k);
         }, 100));
 
         geolocate();
-        pointViewer();
         $body.addClass('page_init_yes');
     }
 
@@ -57,32 +51,27 @@ jQuery(function($) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 map.setCenter(userPosition);
+                map.setZoom(17);
             });
         }
     }
 
-    function pointViewer(respone) {
-        var markers = [];
-        var marker;
-
-
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-    
     addPoint = {
         active: false,
         marker: null,
         infowindow: null,
 
         changeState: function() {
-            if (this.active) {
-                this.hide();
-            } else {
-                this.show();
-            }
+            this.active ? this.hide() : this.show();
         },
+
         show: function() {
             var that = this;
+
+            if (this.active) {
+                return;
+            }
+
             this.active = true;
 
             this.marker = new google.maps.Marker({
@@ -118,6 +107,7 @@ jQuery(function($) {
                                 description: val
                             },
                             success: function (data) {
+                                // todo: говорить пользователю спасибо
                                 that.hide();
                             },
                             error: function (data) {
@@ -140,6 +130,10 @@ jQuery(function($) {
             $('.add-button').addClass('button_active_yes');
         },
         hide: function() {
+            if (!this.active) {
+                return;
+            }
+
             this.active = false;
             this.marker.setMap(null);
             $('.add-button').removeClass('button_active_yes');
@@ -149,4 +143,6 @@ jQuery(function($) {
     $('.add-button').click(function() {
         addPoint.changeState();
     });
+
+    google.maps.event.addDomListener(window, 'load', initialize);
 });
