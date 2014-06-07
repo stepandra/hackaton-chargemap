@@ -1,14 +1,22 @@
 jQuery(function($) {
     var map,
-        mapOptions;
+            mapOptions;
 
     function initialize(lat, lng) {
         mapOptions = {
             zoom: 8,
-            center: new google.maps.LatLng(-34, 150)
+            center: new google.maps.LatLng(-34, 150),
+            zoomControl: true,
+            disableDefaultUI: true,
+            disableDefaultUI: true,
+                    zoomControlOptions: {
+                        style: google.maps.ZoomControlStyle.SMALL,
+                        position: google.maps.ControlPosition.RIGHT_TOP
+                    }
+
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
+                mapOptions);
 
         geolocate();
     }
