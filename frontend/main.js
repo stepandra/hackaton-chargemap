@@ -4,9 +4,14 @@ jQuery(function($) {
 
     function initialize(lat, lng) {
         mapOptions = {
-            zoom: 17
-
-
+            zoom: 17,
+            zoomControl: true,
+            disableDefaultUI: true,
+            disableDefaultUI: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.SMALL,
+                position: google.maps.ControlPosition.RIGHT_TOP
+            }
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
