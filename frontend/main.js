@@ -15,8 +15,7 @@ jQuery(function($) {
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
-        geolocate();
-        pointViewer();
+        
         google.maps.event.addListener(map, 'bounds_changed', $.debounce(function() {
             $.ajax({
                 type: "GET",
@@ -47,14 +46,17 @@ jQuery(function($) {
             });
             console.log(map.getBounds().getNorthEast().A, map.getBounds().getSouthWest().k);
         }, 100));
+
+        geolocate();
+        pointViewer();
         $body.addClass('page_init_yes');
     }
 
     function geolocate() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-
+                userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(userPosition);
             });
         }
     }
@@ -66,9 +68,12 @@ jQuery(function($) {
 
     }
     google.maps.event.addDomListener(window, 'load', initialize);
+    
     addPoint = {
         active: false,
         marker: null,
+        infowindow: null,
+
         changeState: function() {
             if (this.active) {
                 this.hide();
@@ -77,6 +82,7 @@ jQuery(function($) {
             }
         },
         show: function() {
+            var that = this;
             this.active = true;
 
             this.marker = new google.maps.Marker({
@@ -84,19 +90,63 @@ jQuery(function($) {
                 position: userPosition,
                 draggable: true
             });
+
+            if (!this.infowindow) {
+                this.infowindow = new google.maps.InfoWindow({
+                    content: $('#createPopup').html()
+                });
+
+                google.maps.event.addListener(this.infowindow, 'domready', function () {
+                    google.maps.event.clearListeners(that.infowindow, 'domready');
+
+                    $('.add-popup > form').submit(function(e) {
+                        e.preventDefault();
+
+                        var $this = $(this),
+                            position = that.marker.getPosition(),
+                            val = $this.find('textarea').val();
+
+                        $this.find('.add-popup__error').hide();
+                        $this.find('input').attr('disabled', 'disabled');
+
+                        $.ajax({
+                            url: 'points/add',
+                            type: 'POST',
+                            data: {
+                                lat: position.lat(),
+                                lng: position.lng(),
+                                description: val
+                            },
+                            success: function (data) {
+                                that.hide();
+                            },
+                            error: function (data) {
+                                $this.find('input').removeAttr('disabled');
+                                $this.find('.add-popup__error').show().text('Произошла ошибка. Попробуйте позже');
+                            }
+                        });
+
+                        return false;
+                    });
+                });
+            }
+
+            this.infowindow.open(map, this.marker);
+
+            google.maps.event.addListener(this.infowindow, 'closeclick', function(){
+                that.hide();
+            });
+
+            $('.add-button').addClass('button_active_yes');
         },
         hide: function() {
             this.active = false;
             this.marker.setMap(null);
+            $('.add-button').removeClass('button_active_yes');
         }
     };
+    
     $('.add-button').click(function() {
-        var $this = $(this);
-        if ($this.hasClass('button_active_yes')) {
-            $this.removeClass('button_active_yes');
-        } else {
-            $this.addClass('button_active_yes');
-        }
         addPoint.changeState();
     });
 });

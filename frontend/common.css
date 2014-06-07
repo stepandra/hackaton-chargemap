@@ -1,59 +1,56 @@
-html, body, #map-canvas
-{
+html,
+body,
+#map-canvas {
   height: 100%;
   margin: 0px;
-  padding: 0px
+  padding: 0px;
 }
-
-.button
-{
-    cursor: pointer;
-
-    text-align: center;
-    color: #000;
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 11px;
-    background-color: #FFF;
-    padding: 1px 6px;
-    border-radius: 2px;
-
-    border: 1px solid rgba(0, 0, 0, 0.14902);
-    -webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
-    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
-
-    font-weight: 500;
-}
-
-.button.button_active_yes
-{
-    background-color: #FFEFD5;
-}
-
-.add-popup
-{
-    display: none;
-}
-
-.add-button
-{
+.add-button {
   display: none;
-
   position: absolute;
   top: 50px;
   right: 0;
-
+  cursor: pointer;
   margin: 5px;
   min-width: 80px;
+  text-align: center;
+  color: #000;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 11px;
+  background-color: #FFF;
+  padding: 1px 6px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.14902);
+  -webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+  box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+  font-weight: 500;
 }
-
-.add-button:hover
-{
-  background-color: rgb(235, 235, 235);
+.add-button:hover {
+  background-color: #ebebeb;
 }
-
+.add-popup {
+  width: 300px;
+  margin-bottom: 18px;
+  /* Резерв для кнопок */
+}
+.add-popup p {
+  margin: 0 10px;
+  padding: 0 0 5px;
+}
+.add-popup__error {
+  display: none;
+  color: red;
+}
+.add-popup textarea {
+  width: 280px;
+  display: block;
+  margin: 5px 10px;
+}
+.add-popup input {
+  float: right;
+}
 /* After map init */
-.page_init_yes .add-button
-{
+.page_init_yes .add-button {
   display: block;
 }
 

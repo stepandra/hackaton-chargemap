@@ -13,16 +13,21 @@
     </div>
     <div id="map-canvas"></div>
     <div class="button add-button">Добавить розетку</div>
-    <div class="add-popup">
-        <form method="post" action="#">
-            <textarea name="description"></textarea>
-            <input type="submit" value="Сохранить">
-        </form>
-    </div>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="jquery.debounce-1.0.5.js"></script>
     <script src="main.js"></script>
+
+    <script id="createPopup" type="text/x-tmpl">
+        <div class="add-popup">
+            <form method="post" action="#">
+                <p class="add-popup__title">Добавить новую розетку</p>
+                <p class="add-popup__error"></p>
+                <textarea name="description" placeholder="Подскажите нам как найти эту розетку"></textarea>
+                <input type="submit" value="Создать">
+            </form>
+        </div>
+    </script>
 </body>
 </html>
 
