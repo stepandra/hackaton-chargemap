@@ -6,7 +6,7 @@ jQuery(function($) {
         var i,
             mapOptions = {
                 zoom: 11,
-                center: new google.maps.LatLng(50.45015, 30.52651),
+                center: userPosition,
                 zoomControl: true,
                 disableDefaultUI: true,
                 zoomControlOptions: {
@@ -144,5 +144,6 @@ jQuery(function($) {
         addPoint.changeState();
     });
 
+    userPosition = new google.maps.LatLng(50.45015, 30.52651); // Стандартные координаты
     google.maps.event.addDomListener(window, 'load', initialize);
 });
