@@ -1,6 +1,7 @@
 package ua.charger.map.controller;
 
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/points")
 public class PointControllerImpl implements PointController {
+    private static final Logger LOGGER = Logger.getLogger(PointControllerImpl.class);
+
     @Autowired
     private PointService pointService;
 
@@ -72,6 +75,11 @@ public class PointControllerImpl implements PointController {
             @RequestParam("lngStart") float lngStart,
             @RequestParam("latEnd") float latEnd,
             @RequestParam("lngEnd") float lngEnd) {
+        LOGGER.info("Request {" +
+                "latStart:" + latStart + ", " +
+                "lngStart:" + lngStart + ", " +
+                "latEnd:" + latEnd + ", " +
+                "lngEnd:" + lngEnd + "}");
         Answer<List<ChargerPointDTO>> list = new Answer<>();
         list.setElements(pointService.list(latStart, lngStart, latEnd, lngEnd));
         return list;
