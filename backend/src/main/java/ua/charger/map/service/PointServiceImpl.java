@@ -31,7 +31,7 @@ public class PointServiceImpl implements PointService {
         for (ChargerPoint chargerPoint : this.chargerPoints) {
             if (chargerPoint.getLat() < latStart || chargerPoint.getLat() > latEnd)
                 continue;
-            if (chargerPoint.getLng() < lngStart || chargerPoint.getLng() > lngEnd)
+            if (chargerPoint.getLng() > lngStart || chargerPoint.getLng() < lngEnd)
                 continue;
             chargerPoints.add(new ChargerPointDTO(chargerPoint));
         }
