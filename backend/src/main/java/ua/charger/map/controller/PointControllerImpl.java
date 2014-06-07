@@ -39,16 +39,28 @@ public class PointControllerImpl implements PointController {
     @RequestMapping(value = "/{id}/found")
     public
     @ResponseBody
-    int found(@PathVariable("id") int id) {
-        return pointService.found(id);
+    Answer<Integer> found(@PathVariable("id") int id) {
+        Answer<Integer> answer = new Answer<>();
+        try {
+            answer.setElements(pointService.found(id));
+        } catch (RuntimeException runtimeException) {
+            answer.setError(runtimeException.getMessage());
+        }
+        return answer;
     }
 
     @Override
     @RequestMapping(value = "/{id}/notFound")
     public
     @ResponseBody
-    int notFound(@PathVariable("id") int id) {
-        return pointService.notFound(id);
+    Answer<Integer> notFound(@PathVariable("id") int id) {
+        Answer<Integer> answer = new Answer<>();
+        try {
+            answer.setElements(pointService.notFound(id));
+        } catch (RuntimeException runtimeException) {
+            answer.setError(runtimeException.getMessage());
+        }
+        return answer;
     }
 
     @Override
@@ -61,11 +73,7 @@ public class PointControllerImpl implements PointController {
             @RequestParam("latEnd") float latEnd,
             @RequestParam("lngEnd") float lngEnd) {
         Answer<List<ChargerPointDTO>> list = new Answer<>();
-        try {
-            list.setElements(pointService.list(latStart, lngStart, latEnd, lngEnd));
-        } catch (RuntimeException runtimeException) {
-            list.setError(runtimeException.getMessage());
-        }
+        list.setElements(pointService.list(latStart, lngStart, latEnd, lngEnd));
         return list;
     }
 }

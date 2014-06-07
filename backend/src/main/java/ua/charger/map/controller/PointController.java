@@ -16,7 +16,7 @@ public interface PointController {
 
     Answer<List<ChargerPointDTO>> list(float latStart, float lngStart, float latEnd, float lngEnd);
 
-    int found(int id);
+    Answer<Integer> found(int id);
 
-    int notFound(int id);
+    Answer<Integer> notFound(int id);
 }
