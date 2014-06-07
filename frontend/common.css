@@ -56,3 +56,8 @@ html, body, #map-canvas
 {
   display: block;
 }
+
+.page_init_yes .load
+{
+  display: none;
+}
