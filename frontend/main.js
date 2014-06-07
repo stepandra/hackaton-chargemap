@@ -23,7 +23,7 @@ jQuery(function($) {
 
             $.ajax({
                 type: "GET",
-                url: 'http://rozetka.veikus.com:8080/points/list',
+                url: 'points/list',
                 data: {
                     latEnd: sw.lat(),
                     lngEnd: ne.lng(),
