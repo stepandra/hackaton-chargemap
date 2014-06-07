@@ -5,6 +5,7 @@ jQuery(function($) {
     function initialize(lat, lng) {
         mapOptions = {
             zoom: 17,
+            center: new google.maps.LatLng(50.45015, 30.52651),
             zoomControl: true,
             disableDefaultUI: true,
             disableDefaultUI: true,
@@ -18,28 +19,36 @@ jQuery(function($) {
 
         geolocate();
         pointViewer();
-        
+
+        google.maps.event.addListener(map, 'bounds_changed', $.debounce(function () {
+            map.getBounds();
+        }, 100));
+
         $body.addClass('page_init_yes');
     }
 
     function geolocate() {
 
+
+
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                console.log("fd", position.coords.longitude);
+
                 map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
                 console.log(map.getBounds().getSouthWest(), map.getBounds().getNorthEast());
+
 
                 // initialize(position.coords.latitude, position.coords.longitude);
 
             });
         }
     }
-    
+
     function pointViewer() {
         var markers = [];
         var marker;
-        setTimeout(console.log(map.getBounds()), 1000);
+
 
         $.getJSON('response.json', function(response) {
             for (var i = 0; i < response.position.length; i++) {
@@ -51,12 +60,8 @@ jQuery(function($) {
                 });
                 markers.push(marker);
             };
-
-
-
-
-
         });
+
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(map);
         }
