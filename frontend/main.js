@@ -1,5 +1,5 @@
 jQuery(function($) {
-    var map, userPosition, addPoint,
+    var map, userPosition, CreatePoint, Markers,
         $body = $('body');
 
     function initialize() {
@@ -139,7 +139,7 @@ jQuery(function($) {
         }
     };
 
-    addPoint = {
+    CreatePoint = {
         active: false,
         marker: null,
         infowindow: null,
@@ -224,7 +224,7 @@ jQuery(function($) {
     };
     
     $('.add-button').click(function() {
-        addPoint.changeState();
+        CreatePoint.changeState();
     });
 
     userPosition = new google.maps.LatLng(50.45015, 30.52651); // Стандартные координаты
