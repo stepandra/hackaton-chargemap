@@ -12,12 +12,17 @@
 <body>
     <div id="map-canvas"></div>
     <div class="button add-button">Добавить розетку</div>
-    <div class="add-popup">
-        <form method="post" action="#">
-            <textarea name="description"></textarea>
-            <input type="submit" value="Сохранить">
-        </form>
-    </div>
+
+    <script id="createPopup" type="text/x-tmpl">
+        <div class="add-popup">
+            <form method="post" action="#">
+                <p class="add-popup__title">Добавить новую розетку</p>
+                <p class="add-popup__error"></p>
+                <textarea name="description" placeholder="Подскажите нам как найти эту розетку"></textarea>
+                <input type="submit" value="Создать">
+            </form>
+        </div>
+    </script>
 </body>
 </html>
 
