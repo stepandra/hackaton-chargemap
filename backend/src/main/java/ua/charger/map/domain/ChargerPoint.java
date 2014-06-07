@@ -50,4 +50,17 @@ public class ChargerPoint {
     public void setFoursquareId(Integer foursquareId) {
         this.foursquareId = foursquareId;
     }
+
+    @Override
+    public String toString() {
+        return "ChargerPoint{" +
+                "id=" + id +
+                ", foursquareId=" + foursquareId +
+                ", lag=" + lag +
+                ", lng=" + lng +
+                ", description='" + description + '\'' +
+                ", founds=" + founds +
+                ", notFounds=" + notFounds +
+                '}';
+    }
 }

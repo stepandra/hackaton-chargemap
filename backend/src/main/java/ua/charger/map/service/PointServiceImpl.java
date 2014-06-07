@@ -1,5 +1,6 @@
 package ua.charger.map.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ua.charger.map.domain.ChargerPoint;
 import ua.charger.map.dto.ChargerPointDTO;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class PointServiceImpl implements PointService {
+    private static final Logger LOGGER = Logger.getLogger(PointServiceImpl.class);
     private Collection<ChargerPoint> chargerPoints = new ConcurrentLinkedQueue<>();
     private AtomicInteger count = new AtomicInteger();
 
@@ -19,6 +21,7 @@ public class PointServiceImpl implements PointService {
     public void save(ChargerPoint chargerPoint) {
         chargerPoints.add(chargerPoint);
         count.incrementAndGet();
+        LOGGER.trace("Saved: {" + chargerPoint + "}");
     }
 
     @Override
