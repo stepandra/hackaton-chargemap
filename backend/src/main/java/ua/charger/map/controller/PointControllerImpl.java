@@ -6,13 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.charger.map.domain.ChargerPoint;
+import ua.charger.map.dto.Answer;
 import ua.charger.map.dto.ChargerPointDTO;
 import ua.charger.map.service.PointService;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/points")
+@RequestMapping(value = "/points", method = RequestMethod.POST)
 public class PointControllerImpl implements PointController {
     @Autowired
     private PointService pointService;
@@ -51,14 +52,20 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     public
     @ResponseBody
-    List<ChargerPointDTO> list(
+    Answer<List<ChargerPointDTO>> list(
             @RequestParam("latStart") float latStart,
             @RequestParam("lngStart") float lngStart,
             @RequestParam("latEnd") float latEnd,
             @RequestParam("lngEnd") float lngEnd) {
-        return pointService.list(latStart, lngStart, latEnd, lngEnd);
+        Answer<List<ChargerPointDTO>> list = new Answer<>();
+        try {
+            list.setElements(pointService.list(latStart, lngStart, latEnd, lngEnd));
+        } catch (RuntimeException runtimeException) {
+            list.setError(runtimeException.getMessage());
+        }
+        return list;
     }
 }
