@@ -1,5 +1,5 @@
 jQuery(function($) {
-    var map, userPosition, addPoint,
+    var map, userPosition, addPoint, Markers,
         $body = $('body');
 
     function initialize() {
@@ -19,7 +19,8 @@ jQuery(function($) {
         
         google.maps.event.addListener(map, 'bounds_changed', $.debounce(function() {
             var sw = map.getBounds().getSouthWest(),
-                ne = map.getBounds().getNorthEast();
+                ne = map.getBounds().getNorthEast(),
+                center = map.getCenter();
 
             $.ajax({
                 type: "GET",
@@ -36,7 +37,45 @@ jQuery(function($) {
                         new google.maps.Marker({
                             position: new google.maps.LatLng(response[i].lat, response[i].lng),
                             map: map
-                        }).setMap(map);
+                        });
+                    }
+                }
+            });
+
+            // Получаем данные от foursquare
+            $.ajax({
+                type: 'GET',
+                url: 'https://api.foursquare.com/v2/venues/explore',
+                data: {
+                    ll: center.lat() + ',' + center.lng(),
+                    limit: 50,
+                    query: 'розетка',
+                    client_id: 'XBMMXDSCBNDQ2CRJCPUDDZHSN4WS4DSO0ZHKQDEKMSP4RAAY',
+                    client_secret: 'SNM2TSDCSJN1JJPJ3PTXIALM55VUU1K2YKQUR43CZKJJYOV1',
+                    v: 20140605
+                },
+                dataType: "jsonp",
+                success: function(response) {
+                    var items;
+
+                    if (response && response.response && response.response.groups && response.response.groups[0] &&
+                        response.response.groups[0].items) {
+
+                        items = response.response.groups[0].items;
+                        items.forEach(function(item) {
+                            if (item.venue && item.venue.name && item.venue.location && item.venue.location.lat
+                                && item.venue.location.lng && item.tips && item.tips[0]) {
+
+                                Markers.add({
+                                    src: 'foursquare',
+                                    id: item.venue.id,
+                                    description: item.venue.name + "<br>\n" + item.tips[0].text,
+                                    lat: item.venue.location.lat,
+                                    lng: item.venue.location.lng
+                                });
+                            }
+
+                        });
                     }
                 }
             });
@@ -55,6 +94,47 @@ jQuery(function($) {
             });
         }
     }
+
+    Markers = {
+        cache: {},
+        infoWindow: null,
+
+        add: function(data) {
+            var marker,
+                that = this,
+                cacheKey = data.src + '_' + data.id;
+
+            if (!this.cache.hasOwnProperty(cacheKey)) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(data.lat, data.lng),
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    that.showHint(cacheKey);
+                });
+
+                data.marker = marker;
+                this.cache[cacheKey] = data;
+            }
+        },
+
+        showHint: function(cacheKey) {
+            var data;
+
+            if (this.cache.hasOwnProperty(cacheKey)) {
+                data = this.cache[cacheKey];
+
+                this.getInfoWindow().setContent(data.description);
+                this.getInfoWindow().open(map, data.marker);
+            }
+        },
+
+        getInfoWindow: function() {
+            return this.infoWindow || (this.infoWindow = new google.maps.InfoWindow({ content: 'test' }));
+        }
+    };
 
     addPoint = {
         active: false,
