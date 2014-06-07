@@ -3,18 +3,20 @@ package ua.charger.map.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.charger.map.domain.ChargerPoint;
+import ua.charger.map.dto.Answer;
 import ua.charger.map.dto.ChargerPointDTO;
 
 import java.util.List;
 
 public interface PointController {
+    /**
+     * @param notFound not required
+     */
     void add(float lat, float lng, String description, boolean notFound);
 
-    @RequestMapping("/found")
-    int found(@RequestParam("chargerPointId") int id);
+    Answer<List<ChargerPointDTO>> list(float latStart, float lngStart, float latEnd, float lngEnd);
 
-    @RequestMapping("/notFound")
-    int notFound(@RequestParam("chargerPointId") int id);
+    Answer<Integer> found(int id);
 
-    List<ChargerPointDTO> list(float latStart, float lngStart, float latEnd, float lngEnd);
+    Answer<Integer> notFound(int id);
 }

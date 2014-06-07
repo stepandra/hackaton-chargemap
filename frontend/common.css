@@ -53,3 +53,8 @@ body,
 .page_init_yes .add-button {
   display: block;
 }
+
+.page_init_yes .load
+{
+  display: none;
+}

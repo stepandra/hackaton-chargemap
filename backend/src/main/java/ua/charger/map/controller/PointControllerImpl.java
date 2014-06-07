@@ -6,13 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.charger.map.domain.ChargerPoint;
+import ua.charger.map.dto.Answer;
 import ua.charger.map.dto.ChargerPointDTO;
 import ua.charger.map.service.PointService;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/points")
+@RequestMapping(value = "/points")
 public class PointControllerImpl implements PointController {
     @Autowired
     private PointService pointService;
@@ -20,7 +21,7 @@ public class PointControllerImpl implements PointController {
     @Override
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add")
     public void add(@RequestParam("lat") float lat,
                     @RequestParam("lng") float lng,
                     @RequestParam("description") String description,
@@ -35,30 +36,44 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/{id}/found", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/found")
     public
     @ResponseBody
-    int found(@PathVariable("id") int id) {
-        return pointService.found(id);
+    Answer<Integer> found(@PathVariable("id") int id) {
+        Answer<Integer> answer = new Answer<>();
+        try {
+            answer.setElements(pointService.found(id));
+        } catch (RuntimeException runtimeException) {
+            answer.setError(runtimeException.getMessage());
+        }
+        return answer;
     }
 
     @Override
-    @RequestMapping(value = "/{id}/notFound", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/notFound")
     public
     @ResponseBody
-    int notFound(@PathVariable("id") int id) {
-        return pointService.notFound(id);
+    Answer<Integer> notFound(@PathVariable("id") int id) {
+        Answer<Integer> answer = new Answer<>();
+        try {
+            answer.setElements(pointService.notFound(id));
+        } catch (RuntimeException runtimeException) {
+            answer.setError(runtimeException.getMessage());
+        }
+        return answer;
     }
 
     @Override
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list")
     public
     @ResponseBody
-    List<ChargerPointDTO> list(
+    Answer<List<ChargerPointDTO>> list(
             @RequestParam("latStart") float latStart,
             @RequestParam("lngStart") float lngStart,
             @RequestParam("latEnd") float latEnd,
             @RequestParam("lngEnd") float lngEnd) {
-        return pointService.list(latStart, lngStart, latEnd, lngEnd);
+        Answer<List<ChargerPointDTO>> list = new Answer<>();
+        list.setElements(pointService.list(latStart, lngStart, latEnd, lngEnd));
+        return list;
     }
 }
