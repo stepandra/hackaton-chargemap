@@ -21,7 +21,7 @@ public class PointControllerImpl implements PointController {
     @Override
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces="application/json")
     public void add(@RequestParam("lat") float lat,
                     @RequestParam("lng") float lng,
                     @RequestParam("description") String description,
@@ -36,7 +36,7 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/{id}/found", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/found", method = RequestMethod.POST, produces="application/json")
     public
     @ResponseBody
     int found(@PathVariable("id") int id) {
@@ -44,7 +44,7 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/{id}/notFound", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/notFound", method = RequestMethod.POST, produces="application/json")
     public
     @ResponseBody
     int notFound(@PathVariable("id") int id) {
@@ -52,7 +52,7 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces="application/json")
     public
     @ResponseBody
     Answer<List<ChargerPointDTO>> list(
