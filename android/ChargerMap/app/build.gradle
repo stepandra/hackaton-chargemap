@@ -1,0 +1,65 @@
+apply plugin: 'android'
+apply plugin: 'android-apt'
+
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+    signingConfigs {
+        doSign {
+            keyAlias 'mykey'
+            keyPassword 'privettolisi'
+            storeFile file('/Users/anatoly-home-air/Learning/key.keystore')
+            storePassword 'privettolisi'
+        }
+    }
+    buildTypes {
+        release {
+            runProguard true
+            signingConfig signingConfigs.doSign
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+}
+
+def AAVersion = '3.0.1';
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile 'com.google.android.gms:play-services:4.4.52'
+    compile 'com.makeramen:roundedimageview:1.3.0'
+    apt "org.androidannotations:androidannotations:$AAVersion"
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.processResources.manifestFile
+        resourcePackageName 'org.spend.usefull.chargemap.app'
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // replace with the current version of the Android plugin
+        classpath 'com.android.tools.build:gradle:0.11.+'
+        // the latest version of the android-apt plugin
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.2'
+    }
+}
