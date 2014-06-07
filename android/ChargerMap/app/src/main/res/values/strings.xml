@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ChargerMap</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="please_connect_to_the_internet">No connection to the Internet, please connect and try again</string>
+
+</resources>
