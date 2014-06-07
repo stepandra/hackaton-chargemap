@@ -13,7 +13,7 @@ import ua.charger.map.service.PointService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/points", method = RequestMethod.POST)
+@RequestMapping(value = "/points")
 public class PointControllerImpl implements PointController {
     @Autowired
     private PointService pointService;
@@ -21,7 +21,7 @@ public class PointControllerImpl implements PointController {
     @Override
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces="application/json")
+    @RequestMapping(value = "/add")
     public void add(@RequestParam("lat") float lat,
                     @RequestParam("lng") float lng,
                     @RequestParam("description") String description,
@@ -36,7 +36,7 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/{id}/found", method = RequestMethod.POST, produces="application/json")
+    @RequestMapping(value = "/{id}/found")
     public
     @ResponseBody
     int found(@PathVariable("id") int id) {
@@ -44,7 +44,7 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/{id}/notFound", method = RequestMethod.POST, produces="application/json")
+    @RequestMapping(value = "/{id}/notFound")
     public
     @ResponseBody
     int notFound(@PathVariable("id") int id) {
@@ -52,7 +52,7 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/list", method = RequestMethod.POST, produces="application/json")
+    @RequestMapping(value = "/list")
     public
     @ResponseBody
     Answer<List<ChargerPointDTO>> list(
