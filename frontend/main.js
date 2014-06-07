@@ -5,6 +5,7 @@ jQuery(function($) {
     function initialize(lat, lng) {
         mapOptions = {
             zoom: 17,
+            center: new google.maps.LatLng(50.45015, 30.52651),
             zoomControl: true,
             disableDefaultUI: true,
             disableDefaultUI: true,
@@ -24,11 +25,15 @@ jQuery(function($) {
 
     function geolocate() {
 
+
+
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                console.log("fd", position.coords.longitude);
+
                 map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
                 console.log(map.getBounds().getSouthWest(), map.getBounds().getNorthEast());
+
 
                 // initialize(position.coords.latitude, position.coords.longitude);
 
@@ -36,10 +41,11 @@ jQuery(function($) {
         }
     }
 
+
     function pointViewer() {
         var markers = [];
         var marker;
-        setTimeout(console.log(map.getBounds()), 1000);
+
 
         $.getJSON('response.json', function(response) {
             for (var i = 0; i < response.position.length; i++) {
@@ -63,6 +69,13 @@ jQuery(function($) {
     }
 
 
+    var myEfficientFn = $.debounce(function() {
+
+        map.getBounds();
+
+    }, 500);
+    setTimeout(myEfficientFn(), 1000);
     google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.addListener(map, 'bounds_changed', myEfficientFn);
 
 })
