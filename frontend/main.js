@@ -1,6 +1,6 @@
 jQuery(function($) {
-    var map,
-        mapOptions;
+    var map, mapOptions, userPosition, addPoint,
+        $body = $('body');
 
     function initialize(lat, lng) {
         mapOptions = {
@@ -11,6 +11,7 @@ jQuery(function($) {
             mapOptions);
 
         geolocate();
+        $body.addClass('page_init_yes');
     }
 
     function geolocate() {
@@ -20,13 +21,55 @@ jQuery(function($) {
                 console.log("fd", position.coords.longitude);
 
                 // initialize(position.coords.latitude, position.coords.longitude);
-                map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+                userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(userPosition);
             });
         }
     }
 
+    function showAddWindow() {
 
+    }
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
-})
+    addPoint = {
+        active: false,
+        marker: null,
+
+        changeState: function() {
+            if (this.active) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        },
+
+        show: function() {
+            this.active = true;
+
+            this.marker = new google.maps.Marker({
+                map: map,
+                position: userPosition,
+                draggable: true
+            });
+        },
+
+        hide: function() {
+            this.active = false;
+            this.marker.setMap(null);
+        }
+    };
+
+    $('.add-button').click(function() {
+        var $this = $(this);
+
+        if ($this.hasClass('button_active_yes')) {
+            $this.removeClass('button_active_yes');
+        } else {
+            $this.addClass('button_active_yes');
+        }
+
+        addPoint.changeState();
+    });
+});

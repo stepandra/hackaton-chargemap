@@ -4,3 +4,55 @@ html, body, #map-canvas
   margin: 0px;
   padding: 0px
 }
+
+.button
+{
+    cursor: pointer;
+
+    text-align: center;
+    color: #000;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 11px;
+    background-color: #FFF;
+    padding: 1px 6px;
+    border-radius: 2px;
+
+    border: 1px solid rgba(0, 0, 0, 0.14902);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+
+    font-weight: 500;
+}
+
+.button.button_active_yes
+{
+    background-color: #FFEFD5;
+}
+
+.add-popup
+{
+    display: none;
+}
+
+.add-button
+{
+  display: none;
+
+  position: absolute;
+  top: 50px;
+  right: 0;
+
+  margin: 5px;
+  min-width: 80px;
+}
+
+.add-button:hover
+{
+  background-color: rgb(235, 235, 235);
+}
+
+/* After map init */
+.page_init_yes .add-button
+{
+  display: block;
+}
