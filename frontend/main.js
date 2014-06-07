@@ -1,5 +1,5 @@
 jQuery(function($) {
-    var map, userPosition, addPoint, Markers,
+    var map, userPosition, addPoint,
         $body = $('body');
 
     function initialize() {

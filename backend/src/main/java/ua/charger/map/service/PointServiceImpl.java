@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class PointServiceImpl implements PointService {
     private static final Logger LOGGER = Logger.getLogger(PointServiceImpl.class);
+    //todo: must be optimized for production usage
     private Collection<ChargerPoint> chargerPoints = new ConcurrentLinkedQueue<>();
     private AtomicInteger count = new AtomicInteger();
 
@@ -21,7 +22,7 @@ public class PointServiceImpl implements PointService {
     public void save(ChargerPoint chargerPoint) {
         chargerPoints.add(chargerPoint);
         count.incrementAndGet();
-        LOGGER.trace("Saved: {" + chargerPoint + "}");
+        LOGGER.info("Saved: {" + chargerPoint + "}");
     }
 
     @Override
@@ -29,12 +30,14 @@ public class PointServiceImpl implements PointService {
                                    float latEnd, float lngEnd) {
         List<ChargerPointDTO> chargerPoints = new LinkedList<>();
         for (ChargerPoint chargerPoint : this.chargerPoints) {
-            if (chargerPoint.getLat() < latStart || chargerPoint.getLat() > latEnd)
+            //todo: must be optimized for abroad (Africa, America) users
+            if (chargerPoint.getLat() > latStart || chargerPoint.getLat() < latEnd)
                 continue;
             if (chargerPoint.getLng() < lngStart || chargerPoint.getLng() > lngEnd)
                 continue;
             chargerPoints.add(new ChargerPointDTO(chargerPoint));
         }
+        LOGGER.info("Returned list {" + chargerPoints + '}');
         return chargerPoints;
     }
 
