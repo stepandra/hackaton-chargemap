@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+}
+
+sourceSets.main.compileClasspath += configurations.provided
+
+idea {
+    module{
+        scopes.PROVIDED.plus += configurations.provided
+    }
+}
+
+dependencies {
+    compile("javax.persistence:persistence-api:1.0.2")
+    compile("com.fasterxml.jackson.core:jackson-databind")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    provided("org.projectlombok:lombok:1.12.6")
+}
+
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC5")
+    }
+}
