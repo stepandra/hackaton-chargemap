@@ -32,9 +32,9 @@ jQuery(function($) {
                 },
                 dataType: "json",
                 success: function(response) {
-                    for (i = 0; i < response.length; i++) {
+                    for (i = 0; i < response.elements.length; i++) {
                         new google.maps.Marker({
-                            position: new google.maps.LatLng(response[i].lat, response[i].lng),
+                            position: new google.maps.LatLng(response.elements[i].lat, response.elements[i].lng),
                             map: map
                         }).setMap(map);
                     }
