@@ -20,6 +20,10 @@ jQuery(function($) {
         geolocate();
         pointViewer();
 
+        google.maps.event.addListener(map, 'bounds_changed', $.debounce(function () {
+            map.getBounds();
+        }, 100));
+
         $body.addClass('page_init_yes');
     }
 
@@ -56,26 +60,14 @@ jQuery(function($) {
                 });
                 markers.push(marker);
             };
-
-
-
-
-
         });
+
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(map);
         }
     }
 
-    var myEfficientFn = $.debounce(function() {
-
-        map.getBounds();
-
-    }, 500);
-    setTimeout(myEfficientFn(), 1000);
-
     google.maps.event.addDomListener(window, 'load', initialize);
-    //google.maps.event.addListener(map, 'bounds_changed', myEfficientFn);
 
     addPoint = {
         active: false,
