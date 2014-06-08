@@ -93,7 +93,13 @@ jQuery(function($) {
     function escapeHTML(str) {
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
-
+    var image = {
+        url: 'icon.png',
+        size: new google.maps.Size(24, 24),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(24, 24)
+    };
     Markers = {
         cache: {},
         infoWindow: null,
@@ -107,7 +113,7 @@ jQuery(function($) {
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(data.lat, data.lng),
                     map: map,
-                    icon: 'https://lh4.googleusercontent.com/--jbX0UyybkE/U5P-C6bczyI/AAAAAAAALis/xukhi_s5rbI/s32-no/ic_launcher.png',
+                    icon: image,
                     animation: google.maps.Animation.DROP
                 });
 
