@@ -34,13 +34,12 @@ jQuery(function($) {
                 },
                 dataType: "json",
                 success: function(response) {
-                    var item;
-
                     for (i = 0; i < response.elements.length; i++) {
-                        item = response.elements[i];
-                        item.src = "db";
+                        response.elements[i].src = "db";
 
-                        Markers.add(item);
+                        setTimeout(function () {
+                            Markers.add(response.elements[i]);
+                        }, 100 * i);
                     }
                 }
             });
@@ -65,19 +64,20 @@ jQuery(function($) {
                         response.response.groups[0].items) {
 
                         items = response.response.groups[0].items;
-                        items.forEach(function(item) {
+                        items.forEach(function(item, k) {
                             if (item.venue && item.venue.name && item.venue.location && item.venue.location.lat
                                 && item.venue.location.lng && item.tips && item.tips[0]) {
 
-                                Markers.add({
-                                    src: 'foursquare',
-                                    id: item.venue.id,
-                                    description: item.venue.name + "<br>\n" + item.tips[0].text,
-                                    lat: item.venue.location.lat,
-                                    lng: item.venue.location.lng
-                                });
+                                setTimeout(function () {
+                                    Markers.add({
+                                        src: 'foursquare',
+                                        id: item.venue.id,
+                                        description: item.venue.name + "<br>\n" + item.tips[0].text,
+                                        lat: item.venue.location.lat,
+                                        lng: item.venue.location.lng
+                                    });
+                                }, 100 * k);
                             }
-
                         });
                     }
                 }
