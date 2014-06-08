@@ -1,15 +1,16 @@
 package org.spend.usefull.chargermap.app.rest;
 
+import org.androidannotations.annotations.rest.Accept;
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Post;
 import org.androidannotations.annotations.rest.Rest;
 import org.spend.usefull.chargermap.app.dto.com.veikus.rozetka.Answer;
 import org.spend.usefull.chargermap.app.dto.com.veikus.rozetka.ChargerPointDTO;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 
 import java.util.List;
 
-@Rest(rootUrl = "http://rozetka.veikus.com:8080/points", converters = {MappingJackson2HttpMessageConverter.class})
+@Rest(rootUrl = "http://rozetka.veikus.com:8080/points", converters = {MappingJacksonHttpMessageConverter.class})
 public interface ChargerPointRest {
 
     @Post("/add")
