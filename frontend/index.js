@@ -36,8 +36,8 @@ jQuery(function($) {
                 success: function(response) {
                     var item;
 
-                    for (i = 0; i < response.length; i++) {
-                        item = response[i];
+                    for (i = 0; i < response.elements.length; i++) {
+                        item = response.elements[i];
                         item.src = "db";
 
                         Markers.add(item);
@@ -169,9 +169,7 @@ jQuery(function($) {
                 });
 
                 google.maps.event.addListener(this.infowindow, 'domready', function () {
-                    google.maps.event.clearListeners(that.infowindow, 'domready');
-
-                    $('.add-popup > form').submit(function(e) {
+                    $('.add-popup > form').unbind('submit').submit(function(e) {
                         e.preventDefault();
 
                         var $this = $(this),
@@ -191,6 +189,13 @@ jQuery(function($) {
                             },
                             success: function (data) {
                                 // todo: говорить пользователю спасибо
+                                Markers.add({
+                                    src: 'new',
+                                    id: Math.random(), // todo: тут должен быть id с сервера
+                                    lat: position.lat(),
+                                    lng: position.lng(),
+                                    description: val
+                                });
                                 that.hide();
                             },
                             error: function (data) {
@@ -212,6 +217,7 @@ jQuery(function($) {
 
             $('.add-button').addClass('button_active_yes');
         },
+
         hide: function() {
             if (!this.active) {
                 return;
