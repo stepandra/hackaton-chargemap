@@ -5,14 +5,22 @@
     <link href="common.css" rel="stylesheet" media="all"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
 </head>
 
 <body>
     <div class="load">
-        <h1>Loading...</h1>
+        <div class="load__wrp">
+            <h1 class="load__h1">ищем розетки...</h1>
+            <div class="load__img"></div>
+        </div>
     </div>
     <div id="map-canvas"></div>
-    <div class="button add-button">Добавить розетку</div>
+    <div class="button add-button btn-default btn-sm">Добавить розетку</div>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="jquery.debounce-1.0.5.js"></script>
@@ -20,14 +28,20 @@
 
     <script id="createPopup" type="text/x-tmpl">
         <div class="add-popup">
-            <form method="post" action="#">
+            <form class="form-horizontal" method="post" action="#">
                 <p class="add-popup__title">Добавить новую розетку</p>
                 <p class="add-popup__error"></p>
-                <textarea name="description" placeholder="Подскажите нам как найти эту розетку"></textarea>
-                <input type="submit" value="Создать">
+                <textarea class="form-control" name="description" placeholder="Подскажите нам как найти эту розетку"></textarea>
+                <input class="btn btn-default btn-xs pull-left" type="submit" value="Создать">
             </form>
         </div>
     </script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>
 
