@@ -94,7 +94,7 @@ jQuery(function($) {
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
     var image = {
-        url: 'icon.png',
+        url: 'icon.png?v=2',
         size: new google.maps.Size(24, 24),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
