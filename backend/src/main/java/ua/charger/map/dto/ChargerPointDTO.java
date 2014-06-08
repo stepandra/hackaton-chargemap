@@ -3,12 +3,24 @@ package ua.charger.map.dto;
 import ua.charger.map.domain.ChargerPoint;
 
 public class ChargerPointDTO {
-    private final int id;
-    private final Integer foursquareId;
-    private final float lat, lng;
-    private final String description;
-    private final int founds;
-    private final int notFounds;
+    private int id;
+    private Integer foursquareId;
+    private float lat, lng;
+    private String description;
+    private int founds;
+    private int notFounds;
+
+    public ChargerPointDTO() {}
+
+    public ChargerPointDTO(int id, Integer foursquareId, float lat, float lng, String description, int founds, int notFounds) {
+        this.id = id;
+        this.foursquareId = foursquareId;
+        this.lat = lat;
+        this.lng = lng;
+        this.description = description;
+        this.founds = founds;
+        this.notFounds = notFounds;
+    }
 
     public ChargerPointDTO(ChargerPoint chargerPoint) {
         this.id = chargerPoint.getId();
@@ -46,6 +58,34 @@ public class ChargerPointDTO {
 
     public int getNotFounds() {
         return notFounds;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFoursquareId(Integer foursquareId) {
+        this.foursquareId = foursquareId;
+    }
+
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(float lng) {
+        this.lng = lng;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFounds(int founds) {
+        this.founds = founds;
+    }
+
+    public void setNotFounds(int notFounds) {
+        this.notFounds = notFounds;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class PointServiceImpl implements PointService {
     public List<ChargerPointDTO> list(double latStart, double lngStart,
                                       double latEnd, double lngEnd) {
         List<ChargerPointDTO> chargerPoints = new LinkedList<>();
-        if (this.chargerPoints.size() == 0) {
+        if (count.intValue() == 0) {
             return chargerPoints;
         }
         ChargerPointDTO nearestPoint = new ChargerPointDTO(this.chargerPoints.iterator().next());

@@ -15,6 +15,7 @@ public class ChargerPoint {
 
     public ChargerPoint(ChargerPointDTO chargerPointDTO) {
         this.id = ID_COUNT.incrementAndGet();
+        this.foursquareId = chargerPointDTO.getFoursquareId();
         this.lat = chargerPointDTO.getLat();
         this.lng = chargerPointDTO.getLng();
         this.description = chargerPointDTO.getDescription();
