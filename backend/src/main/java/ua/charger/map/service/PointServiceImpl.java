@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class PointServiceImpl implements PointService {
     private static final Logger LOGGER = Logger.getLogger(PointServiceImpl.class);
+    //todo: must be optimized for production usage
     private Collection<ChargerPoint> chargerPoints = new ConcurrentLinkedQueue<>();
     private AtomicInteger count = new AtomicInteger();
 
@@ -25,15 +26,33 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
+    /**
+     todo: must be optimized for abroad (Africa, America, Australia) users
+     */
     public List<ChargerPointDTO> list(float latStart, float lngStart,
-                                   float latEnd, float lngEnd) {
+                                      float latEnd, float lngEnd) {
         List<ChargerPointDTO> chargerPoints = new LinkedList<>();
+        if (this.chargerPoints.size() == 0) {
+            return chargerPoints;
+        }
+        ChargerPointDTO nearestPoint = new ChargerPointDTO(this.chargerPoints.iterator().next());
+        float nearestPointDistance = 272;
+        float tmpPointDistance;
+        float centerLat = latEnd + (latStart - latEnd) / 2;
+        float centerLng = lngStart + (lngEnd - lngStart) / 2;
         for (ChargerPoint chargerPoint : this.chargerPoints) {
-            if (chargerPoint.getLat() < latStart || chargerPoint.getLat() > latEnd)
+            if ((tmpPointDistance = calculateDifferent(chargerPoint, centerLat, centerLng)) < nearestPointDistance) {
+                nearestPoint = new ChargerPointDTO(chargerPoint);
+                nearestPointDistance = tmpPointDistance;
+            }
+            if (chargerPoint.getLat() > latStart || chargerPoint.getLat() < latEnd)
                 continue;
-            if (chargerPoint.getLng() > lngStart || chargerPoint.getLng() < lngEnd)
+            if (chargerPoint.getLng() < lngStart || chargerPoint.getLng() > lngEnd)
                 continue;
             chargerPoints.add(new ChargerPointDTO(chargerPoint));
+        }
+        if (chargerPoints.size() == 0) {
+            chargerPoints.add(nearestPoint);
         }
         LOGGER.info("Returned list {" + chargerPoints + '}');
         return chargerPoints;
@@ -59,5 +78,8 @@ public class PointServiceImpl implements PointService {
         throw new IllegalStateException("No such id");
     }
 
+    private static float calculateDifferent(ChargerPoint chargerPoint, float centerLat, float centerLng) {
+        return Math.abs(centerLat - chargerPoint.getLat()) + Math.abs(centerLng - chargerPoint.getLng());
+    }
 
 }

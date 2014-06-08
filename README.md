@@ -1,2 +1,2 @@
-1. charging maps
-2. 2 buttons - it's simple
+## This is interactive map of charging points
+### it's simple to use
