@@ -36,8 +36,8 @@ jQuery(function($) {
                 success: function(response) {
                     var item;
 
-                    for (i = 0; i < response.length; i++) {
-                        item = response[i];
+                    for (i = 0; i < response.elements.length; i++) {
+                        item = response.elements[i];
                         item.src = "db";
 
                         Markers.add(item);
