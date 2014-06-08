@@ -190,6 +190,8 @@ jQuery(function($) {
                             success: function (data) {
                                 // todo: говорить пользователю спасибо
                                 Markers.add({
+                                    src: 'new',
+                                    id: Math.random(), // todo: тут должен быть id с сервера
                                     lat: position.lat(),
                                     lng: position.lng(),
                                     description: val
