@@ -186,11 +186,14 @@ jQuery(function($) {
                         $.ajax({
                             url: 'points/add',
                             type: 'POST',
-                            data: {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            data: JSON.stringify({
                                 lat: position.lat(),
                                 lng: position.lng(),
                                 description: val
-                            },
+                            }),
                             success: function (data) {
                                 // todo: говорить пользователю спасибо
                                 Markers.add({
