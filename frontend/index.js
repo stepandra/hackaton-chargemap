@@ -169,9 +169,7 @@ jQuery(function($) {
                 });
 
                 google.maps.event.addListener(this.infowindow, 'domready', function () {
-                    google.maps.event.clearListeners(that.infowindow, 'domready');
-
-                    $('.add-popup > form').submit(function(e) {
+                    $('.add-popup > form').unbind('submit').submit(function(e) {
                         e.preventDefault();
 
                         var $this = $(this),
@@ -217,6 +215,7 @@ jQuery(function($) {
 
             $('.add-button').addClass('button_active_yes');
         },
+
         hide: function() {
             if (!this.active) {
                 return;
