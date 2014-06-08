@@ -28,13 +28,12 @@ jQuery(function($) {
                 url: 'points/list/' + ne.lat() + '/' + sw.lng() + '/' + sw.lng() + '/' + sw.lat(),
                 dataType: "json",
                 success: function(response) {
-                    for (i = 0; i < response.elements.length; i++) {
-                        response.elements[i].src = "db";
-
+                    response.elements.forEach(function(item, k) {
                         setTimeout(function () {
-                            Markers.add(response.elements[i]);
-                        }, 100 * i);
-                    }
+                            item.src = "db";
+                            Markers.add(item);
+                        }, 100 * k);
+                    });
                 }
             });
 
