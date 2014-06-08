@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ChargerMap</string>
+    <string name="please_connect_to_the_internet">No connection to the Internet, please connect and try again</string>
+    <string name="welcome_greeting">Find nearest charging point!</string>
+    <string name="add_new_point">Add new point</string>
+    <string name="description">Type description for the point…</string>
+    <string name="add">Add</string>
+    <string name="name">Name of the point</string>
+
+</resources>
