@@ -25,13 +25,7 @@ jQuery(function($) {
             // Получаем данные с нашего сервера
             $.ajax({
                 type: "GET",
-                url: 'points/list',
-                data: {
-                    latEnd: sw.lat(),
-                    lngEnd: ne.lng(),
-                    latStart: ne.lat(),
-                    lngStart: sw.lng()
-                },
+                url: 'points/list/' + ne.lat() + '/' + sw.lng() + '/' + sw.lng() + '/' + sw.lat(),
                 dataType: "json",
                 success: function(response) {
                     for (i = 0; i < response.elements.length; i++) {
