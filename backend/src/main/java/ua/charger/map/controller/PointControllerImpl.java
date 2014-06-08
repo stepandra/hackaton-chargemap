@@ -25,7 +25,7 @@ public class PointControllerImpl implements PointController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/add")
-    public void add(@RequestParam("chargerPoint") ChargerPointDTO chargerPointDTO) {
+    public void add(@RequestBody ChargerPointDTO chargerPointDTO) {
         ChargerPoint chargerPoint = new ChargerPoint(chargerPointDTO);
         pointService.save(chargerPoint);
     }

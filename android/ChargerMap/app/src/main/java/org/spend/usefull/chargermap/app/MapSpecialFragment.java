@@ -28,6 +28,7 @@ import org.spend.usefull.chargermap.app.dto.com.veikus.rozetka.ChargerPointDTO;
 import org.spend.usefull.chargermap.app.rest.ChargerPointRest;
 import org.spend.usefull.chargermap.app.rest.FoursquareRest;
 import org.spend.usefull.chargermap.app.service.LocationManager;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -80,14 +81,14 @@ public class MapSpecialFragment extends Fragment {
                     bounds.southwest.latitude,
                     bounds.northeast.longitude
             );
-        } catch (RuntimeException exception) {
-            showError(exception.getMessage());
+        } catch (RestClientException exception) {
+            showError(exception.getLocalizedMessage());
             answer = new Answer<List<ChargerPointDTO>>();
         }
         FoursquareAnswer foursquareAnswer;
         try {
             foursquareAnswer = foursquareRest.explore(center.latitude, center.longitude);
-        } catch (RuntimeException exception) {
+        } catch (RestClientException exception) {
             showError(exception.getMessage());
             foursquareAnswer = new FoursquareAnswer();
             foursquareAnswer.setGroups(Collections.EMPTY_LIST);
@@ -142,6 +143,9 @@ public class MapSpecialFragment extends Fragment {
     }
 
     private void moveCameraToSeePosition() {
+        if (markers.size() == 0) {
+            return;
+        }
         Marker nearestPoint = markers.get(0);
         double nearestPointDistance = 272;
         double tmpPointDistance;
