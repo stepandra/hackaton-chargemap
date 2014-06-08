@@ -25,16 +25,8 @@ public class PointControllerImpl implements PointController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/add")
-    public void add(@RequestParam("lat") float lat,
-                    @RequestParam("lng") float lng,
-                    @RequestParam("description") String description,
-                    @RequestParam(value = "notFound", required = false, defaultValue = "false") boolean notFound) {
-        ChargerPoint chargerPoint = new ChargerPoint(lat, lng, description);
-        if (notFound) {
-            chargerPoint.getNotFounds().getAndIncrement();
-        } else {
-            chargerPoint.getFounds().getAndIncrement();
-        }
+    public void add(@RequestParam("chargerPoint") ChargerPointDTO chargerPointDTO) {
+        ChargerPoint chargerPoint = new ChargerPoint(chargerPointDTO);
         pointService.save(chargerPoint);
     }
 
@@ -67,14 +59,14 @@ public class PointControllerImpl implements PointController {
     }
 
     @Override
-    @RequestMapping(value = "/list")
+    @RequestMapping(value = "/list/{latStart}/{lngStart}/{latEnd}/{lngEnd}")
     public
     @ResponseBody
     Answer<List<ChargerPointDTO>> list(
-            @RequestParam("latStart") float latStart,
-            @RequestParam("lngStart") float lngStart,
-            @RequestParam("latEnd") float latEnd,
-            @RequestParam("lngEnd") float lngEnd) {
+            @PathVariable("latStart") double latStart,
+            @PathVariable("lngStart") double lngStart,
+            @PathVariable("latEnd") double latEnd,
+            @PathVariable("lngEnd") double lngEnd) {
         LOGGER.info("Request {" +
                 "latStart:" + latStart + ", " +
                 "lngStart:" + lngStart + ", " +

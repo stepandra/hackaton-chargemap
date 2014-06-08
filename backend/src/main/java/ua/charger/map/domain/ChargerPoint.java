@@ -1,5 +1,7 @@
 package ua.charger.map.domain;
 
+import ua.charger.map.dto.ChargerPointDTO;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChargerPoint {
@@ -11,11 +13,13 @@ public class ChargerPoint {
     private AtomicInteger founds = new AtomicInteger();
     private AtomicInteger notFounds = new AtomicInteger();
 
-    public ChargerPoint(float lat, float lng, String description) {
+    public ChargerPoint(ChargerPointDTO chargerPointDTO) {
         this.id = ID_COUNT.incrementAndGet();
-        this.lat = lat;
-        this.lng = lng;
-        this.description = description;
+        this.lat = chargerPointDTO.getLat();
+        this.lng = chargerPointDTO.getLng();
+        this.description = chargerPointDTO.getDescription();
+        this.founds = new AtomicInteger(chargerPointDTO.getFounds());
+        this.notFounds = new AtomicInteger(chargerPointDTO.getNotFounds());
     }
 
     public AtomicInteger getFounds() {

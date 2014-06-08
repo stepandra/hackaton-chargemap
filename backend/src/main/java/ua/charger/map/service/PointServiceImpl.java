@@ -29,17 +29,17 @@ public class PointServiceImpl implements PointService {
     /**
      todo: must be optimized for abroad (Africa, America, Australia) users
      */
-    public List<ChargerPointDTO> list(float latStart, float lngStart,
-                                      float latEnd, float lngEnd) {
+    public List<ChargerPointDTO> list(double latStart, double lngStart,
+                                      double latEnd, double lngEnd) {
         List<ChargerPointDTO> chargerPoints = new LinkedList<>();
         if (this.chargerPoints.size() == 0) {
             return chargerPoints;
         }
         ChargerPointDTO nearestPoint = new ChargerPointDTO(this.chargerPoints.iterator().next());
-        float nearestPointDistance = 272;
-        float tmpPointDistance;
-        float centerLat = latEnd + (latStart - latEnd) / 2;
-        float centerLng = lngStart + (lngEnd - lngStart) / 2;
+        double nearestPointDistance = 272;
+        double tmpPointDistance;
+        double centerLat = (latStart + latEnd) / 2;
+        double centerLng = (lngStart + lngEnd) / 2;
         for (ChargerPoint chargerPoint : this.chargerPoints) {
             if ((tmpPointDistance = calculateDifferent(chargerPoint, centerLat, centerLng)) < nearestPointDistance) {
                 nearestPoint = new ChargerPointDTO(chargerPoint);
@@ -78,7 +78,7 @@ public class PointServiceImpl implements PointService {
         throw new IllegalStateException("No such id");
     }
 
-    private static float calculateDifferent(ChargerPoint chargerPoint, float centerLat, float centerLng) {
+    private static double calculateDifferent(ChargerPoint chargerPoint, double centerLat, double centerLng) {
         return Math.abs(centerLat - chargerPoint.getLat()) + Math.abs(centerLng - chargerPoint.getLng());
     }
 

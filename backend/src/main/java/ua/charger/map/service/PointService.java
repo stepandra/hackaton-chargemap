@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface PointService {
     void save(ChargerPoint chargerPoint);
-    List<ChargerPointDTO> list(float latStart, float lngStart,
-                            float latEnd, float lngEnd);
+    List<ChargerPointDTO> list(double latStart, double lngStart,
+                               double latEnd, double lngEnd);
     int found(int id);
     int notFound(int id);
 }

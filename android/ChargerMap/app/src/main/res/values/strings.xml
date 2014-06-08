@@ -4,5 +4,8 @@
     <string name="app_name">ChargerMap</string>
     <string name="hello_world">Hello world!</string>
     <string name="please_connect_to_the_internet">No connection to the Internet, please connect and try again</string>
+    <string name="header_welcome">Found nearest charging point</string>
+    <string name="welcome_greeting">Welcome!</string>
+    <string name="welcome_massage">Msg</string>
 
 </resources>

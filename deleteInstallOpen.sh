@@ -1,0 +1,2 @@
+#!/bin/bash
+/Applications/Android\ Studio.app/sdk/platform-tools/adb shell pm uninstall org.spend.usefull.chargermap.app;/Applications/Android\ Studio.app/sdk/platform-tools/adb install /Users/anatoly-home-air/Learning/Hackaton/hackaton-chargemap/android/ChargerMap/app/app.apk; /Applications/Android\ Studio.app/sdk/platform-tools/adb shell am start -n org.spend.usefull.chargermap.app/org.spend.usefull.chargermap.app.MainActivity_

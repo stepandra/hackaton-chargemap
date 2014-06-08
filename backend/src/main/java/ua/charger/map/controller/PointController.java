@@ -9,12 +9,10 @@ import ua.charger.map.dto.ChargerPointDTO;
 import java.util.List;
 
 public interface PointController {
-    /**
-     * @param notFound not required
-     */
-    void add(float lat, float lng, String description, boolean notFound);
 
-    Answer<List<ChargerPointDTO>> list(float latStart, float lngStart, float latEnd, float lngEnd);
+    void add(ChargerPointDTO chargerPointDTO);
+
+    Answer<List<ChargerPointDTO>> list(double latStart, double lngStart, double latEnd, double lngEnd);
 
     Answer<Integer> found(int id);
 

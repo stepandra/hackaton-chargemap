@@ -12,10 +12,11 @@ import org.androidannotations.annotations.SystemService;
 
 @EFragment(R.layout.fragment_welcome)
 public class WelcomeFragment extends Fragment {
+
     @SystemService
     protected ConnectivityManager connectivity;
 
-    @Click(R.id.buttonWelcome)
+    @Click(R.id.imageButtonHeader)
     public void openMap() {
         if (isConnectionToInternet()) {
             FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
