@@ -72,7 +72,7 @@ jQuery(function($) {
                                     Markers.add({
                                         src: 'foursquare',
                                         id: item.venue.id,
-                                        description: item.venue.name + "<br>\n" + item.tips[0].text,
+                                        description: item.venue.name + ":\n" + item.tips[0].text,
                                         lat: item.venue.location.lat,
                                         lng: item.venue.location.lng
                                     });
@@ -96,6 +96,10 @@ jQuery(function($) {
                 map.setZoom(17);
             });
         }
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
     Markers = {
@@ -129,7 +133,7 @@ jQuery(function($) {
             if (this.cache.hasOwnProperty(cacheKey)) {
                 data = this.cache[cacheKey];
 
-                this.getInfoWindow().setContent(data.description);
+                this.getInfoWindow().setContent( escapeHTML(data.description).replace("\n", "<br />") );
                 this.getInfoWindow().open(map, data.marker);
             }
         },
