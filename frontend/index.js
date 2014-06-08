@@ -16,7 +16,7 @@ jQuery(function($) {
             };
 
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-        
+
         google.maps.event.addListener(map, 'bounds_changed', $.debounce(function() {
             var sw = map.getBounds().getSouthWest(),
                 ne = map.getBounds().getNorthEast(),
@@ -29,7 +29,7 @@ jQuery(function($) {
                 dataType: "json",
                 success: function(response) {
                     response.elements.forEach(function(item, k) {
-                        setTimeout(function () {
+                        setTimeout(function() {
                             item.src = "db";
                             Markers.add(item);
                         }, 100 * k);
@@ -58,10 +58,9 @@ jQuery(function($) {
 
                         items = response.response.groups[0].items;
                         items.forEach(function(item, k) {
-                            if (item.venue && item.venue.name && item.venue.location && item.venue.location.lat
-                                && item.venue.location.lng && item.tips && item.tips[0]) {
+                            if (item.venue && item.venue.name && item.venue.location && item.venue.location.lat && item.venue.location.lng && item.tips && item.tips[0]) {
 
-                                setTimeout(function () {
+                                setTimeout(function() {
                                     Markers.add({
                                         src: 'foursquare',
                                         id: item.venue.id,
@@ -92,7 +91,7 @@ jQuery(function($) {
     }
 
     function escapeHTML(str) {
-        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     Markers = {
@@ -108,6 +107,7 @@ jQuery(function($) {
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(data.lat, data.lng),
                     map: map,
+                    icon: 'https://lh4.googleusercontent.com/--jbX0UyybkE/U5P-C6bczyI/AAAAAAAALis/xukhi_s5rbI/s32-no/ic_launcher.png',
                     animation: google.maps.Animation.DROP
                 });
 
@@ -126,13 +126,15 @@ jQuery(function($) {
             if (this.cache.hasOwnProperty(cacheKey)) {
                 data = this.cache[cacheKey];
 
-                this.getInfoWindow().setContent( escapeHTML(data.description).replace("\n", "<br />") );
+                this.getInfoWindow().setContent(escapeHTML(data.description).replace("\n", "<br />"));
                 this.getInfoWindow().open(map, data.marker);
             }
         },
 
         getInfoWindow: function() {
-            return this.infoWindow || (this.infoWindow = new google.maps.InfoWindow({ content: 'test' }));
+            return this.infoWindow || (this.infoWindow = new google.maps.InfoWindow({
+                content: 'test'
+            }));
         }
     };
 
@@ -165,7 +167,7 @@ jQuery(function($) {
                     content: $('#createPopup').html()
                 });
 
-                google.maps.event.addListener(this.infowindow, 'domready', function () {
+                google.maps.event.addListener(this.infowindow, 'domready', function() {
                     $('.add-popup > form').unbind('submit').submit(function(e) {
                         e.preventDefault();
 
@@ -187,7 +189,7 @@ jQuery(function($) {
                                 lng: position.lng(),
                                 description: val
                             }),
-                            success: function (data) {
+                            success: function(data) {
                                 // todo: говорить пользователю спасибо
                                 Markers.add({
                                     src: 'new',
@@ -198,7 +200,7 @@ jQuery(function($) {
                                 });
                                 that.hide();
                             },
-                            error: function (data) {
+                            error: function(data) {
                                 $this.find('input').removeAttr('disabled');
                                 $this.find('.add-popup__error').show().text('Произошла ошибка. Попробуйте позже');
                             }
@@ -211,7 +213,7 @@ jQuery(function($) {
 
             this.infowindow.open(map, this.marker);
 
-            google.maps.event.addListener(this.infowindow, 'closeclick', function(){
+            google.maps.event.addListener(this.infowindow, 'closeclick', function() {
                 that.hide();
             });
 
@@ -228,7 +230,7 @@ jQuery(function($) {
             $('.add-button').removeClass('button_active_yes');
         }
     };
-    
+
     $('.add-button').click(function() {
         CreatePoint.changeState();
     });
