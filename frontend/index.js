@@ -191,6 +191,11 @@ jQuery(function($) {
                             },
                             success: function (data) {
                                 // todo: говорить пользователю спасибо
+                                Markers.add({
+                                    lat: position.lat(),
+                                    lng: position.lng(),
+                                    description: val
+                                });
                                 that.hide();
                             },
                             error: function (data) {
