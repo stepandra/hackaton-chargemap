@@ -6,7 +6,7 @@ import org.spend.usefull.chargermap.app.dto.com.foursquare.api.FoursquareItem;
 public class ChargerPointDTO {
     private Integer id;
     private Integer foursquareId;
-    private float lat, lng;
+    private double lat, lng;
     private String description;
     private int founds;
     private int notFounds;
@@ -30,11 +30,11 @@ public class ChargerPointDTO {
         return foursquareId;
     }
 
-    public float getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public float getLng() {
+    public double getLng() {
         return lng;
     }
 
@@ -48,6 +48,34 @@ public class ChargerPointDTO {
 
     public int getNotFounds() {
         return notFounds;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setFoursquareId(Integer foursquareId) {
+        this.foursquareId = foursquareId;
+    }
+
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(float lng) {
+        this.lng = lng;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFounds(int founds) {
+        this.founds = founds;
+    }
+
+    public void setNotFounds(int notFounds) {
+        this.notFounds = notFounds;
     }
 
     @Override

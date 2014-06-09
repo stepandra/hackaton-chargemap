@@ -1,8 +1,12 @@
 package org.spend.usefull.chargermap.app;
 
 import android.app.Fragment;
-import android.location.Criteria;
 import android.location.Location;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,8 +22,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
 import org.spend.usefull.chargermap.app.dto.com.foursquare.api.FoursquareAnswer;
 import org.spend.usefull.chargermap.app.dto.com.foursquare.api.FoursquareItem;
@@ -49,12 +55,15 @@ public class MapSpecialFragment extends Fragment {
     @RestService
     protected FoursquareRest foursquareRest;
 
+    @ViewById
+    protected View content;
+
     private void setCallbacks() {
         map.setMyLocationEnabled(true);
         map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 initMapUISettings();
                 if (locationManager.isLocationDetected())
                     moveCameraToUser();
@@ -129,37 +138,49 @@ public class MapSpecialFragment extends Fragment {
     @UiThread
     void pickPointsOnMap(List<ChargerPointDTO> chargerPoints) {
         for (Marker marker : markers) {
-            marker.remove();
+            if (!marker.isVisible()) {
+                marker.remove();
+            }
         }
-        markers = new LinkedList<Marker>();
+
+        chargersLabel:
         for (ChargerPointDTO chargerPoint : chargerPoints) {
+            for (Marker marker : markers) {
+                if (marker.getPosition().latitude == chargerPoint.getLat() &&
+                        marker.getPosition().longitude == chargerPoint.getLng()) {
+                    continue chargersLabel;
+                }
+            }
             markers.add(map.addMarker(new MarkerOptions()
                     .position(new LatLng(chargerPoint.getLat(), chargerPoint.getLng()))
                     .title(chargerPoint.getDescription())
+                    .anchor(0.0f, 1.0f)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon))));
         }
-        moveCameraToUser();
         moveCameraToSeePosition();
     }
 
-    private void moveCameraToSeePosition() {
+    @UiThread
+    void moveCameraToSeePosition() {
         if (markers.size() == 0) {
             return;
         }
         Marker nearestPoint = markers.get(0);
         double nearestPointDistance = 272;
         double tmpPointDistance;
-        Location myLocation =  locationManager.getLocation();
-        double centerLat = myLocation.getLatitude();
-        double centerLng = myLocation.getLongitude();
         for (Marker marker : markers) {
-            if ((tmpPointDistance = calculateDifferent(marker, centerLat, centerLng)) < nearestPointDistance) {
+            if ((tmpPointDistance = locationManager.getLocation().distanceTo(new LocationAdapter(marker.getPosition()))) < nearestPointDistance) {
                 nearestPoint = marker;
                 nearestPointDistance = tmpPointDistance;
             }
         }
         while (!see(nearestPoint)) {
-            map.animateCamera(CameraUpdateFactory.zoomOut());
+            try {
+                map.animateCamera(CameraUpdateFactory.zoomOut());
+                Thread.sleep(100l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -172,18 +193,29 @@ public class MapSpecialFragment extends Fragment {
         return true;
     }
 
-    private static double calculateDifferent(Marker marker, double centerLat, double centerLng) {
-        return Math.abs(centerLat - marker.getPosition().latitude) + Math.abs(centerLng - marker.getPosition().longitude);
+    private static double calculateDifferent(double markerLatitude, double markerLongitude,
+                                             double centerLat, double centerLng) {
+        return Math.abs(centerLat - markerLatitude) + Math.abs(centerLng - markerLongitude);
     }
 
     private void moveCameraToUser() {
         Location location = locationManager.getLocation();
-        map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 14));
     }
+
     @AfterViews
     public void initMap() {
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         setCallbacks();
+    }
+
+    @Click(R.id.addNewPointButton)
+    void addNewPoint() {
+        map.addMarker(new MarkerOptions()
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_new))
+                        .position(map.getCameraPosition().target)
+                        .draggable(true)
+        ).showInfoWindow();
     }
 
     private void initMapUISettings() {
@@ -191,5 +223,74 @@ public class MapSpecialFragment extends Fragment {
         map.getUiSettings().setScrollGesturesEnabled(true);
         map.getUiSettings().setTiltGesturesEnabled(true);
         map.getUiSettings().setRotateGesturesEnabled(true);
+        // Setting a custom info window adapter for the google map
+        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                // Getting view from the layout file info_window_layout
+                View popup = getActivity().getLayoutInflater().inflate(R.layout.info_window_layout, null);
+
+                // Getting the position from the marker
+                final LatLng latLng = marker.getPosition();
+
+                // Getting reference to the TextView to set latitude
+                TextView textViewName = (TextView) popup.findViewById(R.id.textViewName);
+                textViewName.setText("Зарядка");
+
+                // Getting reference to the TextView to set longitude
+                TextView textViewDescription = (TextView) popup.findViewById(R.id.textViewDescription);
+                textViewDescription.setText(marker.getTitle());
+
+                if (marker.getTitle() == null) {
+                    textViewName.setVisibility(View.INVISIBLE);
+                    textViewDescription.setVisibility(View.INVISIBLE);
+
+                    final EditText editTextName = (EditText) popup.findViewById(R.id.editTextName);
+                    editTextName.setVisibility(View.VISIBLE);
+
+                    final EditText editTextDescription = (EditText) popup.findViewById(R.id.editTextDescription);
+                    editTextDescription.setVisibility(View.VISIBLE);
+
+                    ImageButton imageButtonUp = (ImageButton) popup.findViewById(R.id.imageButtonUp);
+                    imageButtonUp.setEnabled(false);
+
+                    ImageButton imageButtonDown = (ImageButton) popup.findViewById(R.id.imageButtonDown);
+                    imageButtonDown.setEnabled(false);
+
+                    Button buttonAdd = (Button) popup.findViewById(R.id.buttonAdd);
+                    buttonAdd.setVisibility(View.VISIBLE);
+
+                    buttonAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View button) {
+                            if (editTextName.getText().toString().equals("") || editTextDescription.getText().toString().equals("")) {
+                                return;
+                            }
+                            ChargerPointDTO chargerPointDTO = new ChargerPointDTO();
+                            chargerPointDTO.setDescription(editTextDescription.getText().toString());
+                            chargerPointDTO.setLat((float) latLng.latitude);
+                            chargerPointDTO.setLng((float) latLng.longitude);
+                            try {
+                                chargerPointRest.add(chargerPointDTO);
+                            } catch (RestClientException exception) {
+                                showError(exception.getLocalizedMessage());
+                            }
+                        }
+                    });
+                }
+
+                return popup;
+
+            }
+        });
     }
 }

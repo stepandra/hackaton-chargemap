@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="@string/name"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:inputType="textAutoCorrect" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="200dp"
+        android:singleLine="false"
+        android:textSize="14sp"
+        android:layout_below="@id/textViewName"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_marginLeft="20dp"
+        android:textSize="15sp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="@id/editTextName"
+        android:hint="@string/description"
+        android:layout_below="@id/editTextName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:visibility="invisible" />
+
+
+    <ImageButton
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:id="@+id/imageButtonUp"
+        android:src="@drawable/like"
+        android:scaleType="centerCrop"
+        android:layout_below="@id/editTextDescription"
+        android:layout_margin="10dp" />
+
+    <ImageButton
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:id="@+id/imageButtonDown"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/dislike"
+        android:scaleType="centerCrop"
+        android:layout_below="@id/editTextDescription"
+        android:layout_toRightOf="@id/imageButtonUp"/>
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="34dp"
+        android:id="@+id/buttonAdd"
+        android:textSize="15sp"
+        android:layout_alignRight="@id/editTextDescription"
+        android:layout_margin="10dp"
+        android:visibility="invisible"
+        android:text="@string/add"
+        android:layout_below="@id/editTextDescription"
+        android:layout_toRightOf="@id/imageButtonDown"/>
 
 </RelativeLayout>

@@ -16,7 +16,7 @@ public class WelcomeFragment extends Fragment {
     @SystemService
     protected ConnectivityManager connectivity;
 
-    @Click(R.id.imageButtonHeader)
+    @Click({R.id.imageButtonHeader, R.id.relativeLayout})
     public void openMap() {
         if (isConnectionToInternet()) {
             FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();

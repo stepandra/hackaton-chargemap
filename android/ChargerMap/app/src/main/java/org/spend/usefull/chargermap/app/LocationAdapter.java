@@ -1,7 +1,13 @@
 package org.spend.usefull.chargermap.app;
 
-/**
- * Created by anatoly-home-air on 08/06/2014.
- */
-public class LocationAdapter {
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
+
+public class LocationAdapter extends Location {
+    public LocationAdapter(LatLng position) {
+        super(LocationAdapter.class.getName());
+        setLatitude(position.latitude);
+        setLongitude(position.longitude);
+    }
 }

@@ -9,4 +9,11 @@
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+    <Button
+        android:id="@+id/addNewPointButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/add_new_point"
+        android:textSize="20sp"/>
 </FrameLayout>

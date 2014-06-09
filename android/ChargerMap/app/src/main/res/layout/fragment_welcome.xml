@@ -17,12 +17,14 @@
         android:src="@drawable/up" />
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/imageButtonHeader"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="20dp"
+        android:layout_marginTop="0dp"
         android:background="@drawable/round_corners">
 
         <TextView
@@ -34,14 +36,14 @@
             android:text="@string/welcome_greeting"
             android:textSize="35sp" />
 
-        <TextView
+        <com.makeramen.RoundedImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_below="@id/welcome_greeting_text_view"
             android:gravity="center_horizontal"
             android:padding="20dp"
             android:paddingTop="0dp"
-            android:text="@string/welcome_massage"
+            android:src="@drawable/buttery_low"
             android:textSize="20sp" />
     </RelativeLayout>
 

@@ -4,6 +4,7 @@ import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
 import org.spend.usefull.chargermap.app.dto.com.foursquare.api.FoursquareAnswer;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 
 @Rest(rootUrl = "https://api.foursquare.com/v2/venues", converters = {MappingJackson2HttpMessageConverter.class})
 public interface FoursquareRest {
